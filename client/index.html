@@ -1,0 +1,28 @@
+<head>
+	<title>Ultimate TicTacToe with Video Chat</title>
+</head>
+<body>
+	<div id = "mainContainer">
+		{{renderPage}}
+	</div>
+</body>
+
+<template name= "indexTemplate">
+<div id="container" class="container-fluid">
+		<div class="row-fluid">
+			<div id="main-window" class="span9">
+				{{> headerTemplate}}
+				<div id="game" style= "height: 402px;">
+					{{#if currentUser}}
+					<a id="start-game" href="/game" class="btn btn-success">Start Game!</a>
+					{{else}}
+					{{loginButtons}}
+					{{/if}}
+				</div>
+			</div>	
+			<div id="sidebar" class="span3">
+				{{>leaderboardsTemplate}}
+			</div>
+		</div>
+	</div>
+</template>

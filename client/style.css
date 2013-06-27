@@ -1,0 +1,334 @@
+html{
+}
+body{
+	background:white !important;
+}
+#mainContainer{
+	min-width: 850px;
+	width: 100%;
+	height: 100%;
+}
+#container{
+	min-width: 850px;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+#main-window{
+	border: 1px solid black;
+	min-width: 600px;
+	background: white;
+	height: 100%;
+}
+#sidebar{
+	background: rgb(46, 45, 44);
+	min-width: 200px;
+	width: 25.53191489361702%;
+	margin-left: 0px;
+	height: 100%;
+}
+#pic{
+	float: left;
+	margin-left: 15px;
+	width: 32px;
+	height: 32px;
+	margin-top: 5px;
+	margin-right: 10px;
+	border: 1px solid #63867E;
+}
+#name{
+	display: block;
+	color: #eee;
+	left: 80px;
+	float: left;
+	font-size: 15px
+}
+#score{
+	color: #eee;
+	float: right;
+	display: block;
+	margin-right: 10px;
+	font-size: 15px;
+}
+#header{
+	background: #316758;
+	height: 45px;
+	padding-bottom: 10px;
+}
+#header h1{
+	font-size: 15px;
+	text-align: center;
+	color: white;
+	margin: 0px;
+	padding: 0px;
+}
+#topbar{
+	height: 70px;
+	position: relative;
+}
+#userinfo{
+	position: absolute;
+	top: 40px;
+	height: 40px;
+	background: #4C9E87;
+	width: 100%;
+}
+#logout{
+	margin-left: 10px;
+	margin-top: 5px;
+}
+.btn-logout {
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #316758;
+	*background-color: #316758;
+	background-image: -moz-linear-gradient(top, #45916A, #316758);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#45916A), to(#316758));
+	background-image: -webkit-linear-gradient(top, #45916A, #316758);
+	background-image: -o-linear-gradient(top, #45916A, #316758);
+	background-image: linear-gradient(to bottom, #45916A, #316758);
+	background-repeat: repeat-x;
+	border-color: #316758;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#45916A', endColorstr='#316758', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+.btn-logout:hover,
+.btn-logout:active,
+.btn-logout.active,
+.btn-logout.disabled,
+.btn-logout[disabled] {
+	color: #FFFFFF;
+	background-color: #316758;
+	*background-color: #003bb3;
+}
+
+#game{
+	width: 550px;
+	border: 1px solid #DDD;
+	margin: 30px auto;
+	padding: 50px;
+	position: relative;
+}
+#start-game{
+	display: block;
+	padding-top: 20px;
+	width: 200px;
+	height: 40px;
+	font-size: 30px;
+	margin: 175px auto 0 auto;
+}
+#leaderboards{
+}
+#leaderboards-top{
+	height: 50px;
+	width: 100%;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	padding-top: 10px;
+}
+#leaderboards h3{
+	margin-top: 0px;
+	margin-left: 10px;
+	color: #fff;
+}
+#leaders-list{
+	margin: 0px;
+	padding: 0px;
+}
+#leaders-list li{
+	background: #32394a;
+	position: relative;
+	padding: 10px 0px;
+	display: block;
+	width: 100%;
+	height: 40px;
+	margin: 0px;
+}
+#leaders-list li .pic{
+	width: 30px;
+	height: 30px;
+	border: 1px solid #c4ccda;
+	float: left;
+	position: absolute;
+	left: 10px;
+}
+#leaders-list li .friend-name{
+	position :absolute;
+	left: 50px;
+	color: white;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, .6);
+	font-size: 15px;
+	margin-top: 5px;
+	font-weight: bold;
+}
+#leaders-list li .friend-score{
+	position: absolute;
+	right: 5px;
+	color: #c4ccda;
+	margin-top: 20px;
+}
+.divider {
+    background: #434B5C; background: -webkit-gradient(linear, center top, center bottom, from(#434B5C), to(#394152)); background: -webkit-linear-gradient(#434B5C, #394152); border-bottom: 1px solid #242A37; border-top: none; -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08); color: #7A8292; 
+    min-height: 1px; padding-left: 10px; text-shadow: 0 1px 0 rgba(0, 0, 0, .6);
+}
+/*******************/
+.half-sidebar{
+	height: 50%;
+	overflow: scroll;
+}
+.full-sidebar{
+	height: 100%;
+}
+#chat{
+	background: #181818;
+}
+.chat-window{
+	margin-bottom: 10px;
+	border: 1px solid #4D4D4D;
+	margin-left: auto;
+	margin-right: auto;
+}
+#chat-window-1{
+	margin-top: 10px;
+}
+/**********************/
+#turn {
+    font-size: 40px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #B4B4B4;
+}
+#player{
+	width: 30px;
+	height: 30px;
+	display:block;
+	display: inline-block;
+}
+#player.x{
+	background: url('../img/x.png');
+	display: inline-block;
+}
+#player.o{
+	background: url('../img/o.png');
+}
+/**********************/
+.board{
+	margin: 0 auto;
+}
+table{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+td{
+	text-align: center;
+}
+.subcell{
+	height: 40px;
+	width: 40px;
+}
+.subboard{
+	position: relative;
+	margin: 5px;
+	z-index: 100;
+}
+.x{
+	width: 40px;
+	height: 40px;
+	background: url(../img/x.png);
+	background-size: 100% auto;
+	display: block;
+}
+.o{
+	width: 40px;
+	height: 40px;
+	background: url(../img/o.png);
+	background-size: 100% auto;
+	display: block;
+}
+.subrow.top td{
+	border-bottom: 1px solid black;
+}
+.subrow.bottom td{
+	border-top: 1px solid black;
+}
+.subcell.middle{
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+.row.top .cell{
+	border-bottom: 3px solid black;
+}
+.row.bottom .cell{
+	border-top: 3px solid black;
+}
+.cell.middle{
+	border-left: 3px solid black;
+	border-right: 3px solid black;
+}
+.line{
+	display: block;
+	position: absolute;
+	background-size: 100% auto !important;
+	z-index: 150;
+}
+.line.horiz{
+	width: 120px;
+	height: 40px;
+	left: 0px;
+}
+.line.horiz.green{
+	background: url('../img/horiz_g.png');
+}
+.line.horiz.red{
+	background: url('../img/horiz_r.png');
+}
+.line.horiz.top{
+	top: 0px;
+}
+.line.horiz.middle{
+	top: 40px;
+}
+.line.horiz.bottom{
+	top: 80px;
+}
+.line.vert{
+	width: 40px;
+	height: 120px;
+	top: 0px;
+}
+.line.vert.green{
+	background: url(../img/vert_g.png);
+}
+.line.vert.red{
+	background: url(../img/vert_r.png);
+}
+.line.vert.left{
+	left: 0px;
+}
+.line.vert.middle{
+	left: 45px;
+}
+.line.vert.right{
+	left: 85px;
+}
+.subboard{
+	background-repeat: no-repeat !important;
+	background-size: 100% !important;
+}
+.subboard.leftDiag.green{
+	background: url(../img/ldiag_g.png);
+}
+.subboard.leftDiag.red{
+	background: url(../img/ldiag_r.png);
+}
+.subboard.rightDiag.green{
+	background: url(../img/rdiag_g.png);
+}
+.subboard.rightDiag.red{
+	background: url(../img/rdiag_r.png);
+}
