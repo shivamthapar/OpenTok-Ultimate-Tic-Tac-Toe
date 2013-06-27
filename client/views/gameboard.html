@@ -1,0 +1,34 @@
+<template name = "gameboardTemplate">
+  {{#with gameboard}}
+	<table class= "board">
+    {{#each rowBoard}}
+    <tr class= "row {{boardPosition}}">
+      {{> rowBoardTemplate}}
+    </tr>
+    {{/each}}
+	</table>
+  {{board}}
+  {{/with}}
+</template>
+
+<template name="rowBoardTemplate">
+{{#each columnBoard}}
+<td class= "cell {{boardColumnPosition}}">
+  {{> subboardTemplate}}
+</td>
+{{/each}}
+</template>
+
+<template name="subboardTemplate">
+<table class = "subboard {{highlight}}">
+  {{#each rowSubboard}}
+  <tr class= "subrow {{subboardRowPosition}}">
+    {{#each columnSubboard}}
+    <td class= "subcell {{subboardColumnPosition}}">
+      <span class="{{gamePiece}}"></span>
+    </td>
+    {{/each}}
+  </tr>
+  {{/each}}
+</table>
+</template>

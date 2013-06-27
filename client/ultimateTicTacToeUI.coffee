@@ -5,7 +5,6 @@
 	firstMove = true
 	lastSubcellClickedCoords = null
 	$subboard = null
-	cursor= null
 	game_id = Session.get('currentGame')
 	me = Session.get('player')
 	if game_id != null
@@ -93,7 +92,7 @@
 		$cell = $($subboard.parents('.cell')[0])
 		if $subboard.has('.line').length>0
 			return
-		if winner==0 
+		if winner==0
 			return
 		color = ""
 		if winner == 1
