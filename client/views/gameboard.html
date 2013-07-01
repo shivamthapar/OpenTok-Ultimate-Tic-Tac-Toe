@@ -20,7 +20,7 @@
 </template>
 
 <template name="subboardTemplate">
-<table class = "subboard {{highlight}}">
+<table class = "subboard {{highlight}} {{diagonal}} {{rowCounter}} {{columnCounter}}">
   {{#each rowSubboard}}
   <tr class= "subrow {{subboardRowPosition}}">
     {{#each columnSubboard}}
@@ -30,5 +30,6 @@
     {{/each}}
   </tr>
   {{/each}}
+  <span class= "{{line}}"></span>
 </table>
 </template>

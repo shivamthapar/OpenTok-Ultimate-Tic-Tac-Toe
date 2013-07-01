@@ -18,6 +18,13 @@ class window.TicTacToe
 	#Big board. Represents which subboards have been won by who
 	big_board : [[0,0,0],[0,0,0],[0,0,0]]
 
+	#How have different subboards been won
+	# 0 = none, 1 = top-horiz, 2 = middle-horiz, 3= bottom-horiz
+	# 4 = left-vert, 5 = middle-vert, 6 = right-vert
+	# 7 = left-diag, 8 = right-diag
+	subboard_wins : [[0,0,0],[0,0,0],[0,0,0]]
+
+
 	subboardFull : (board)->
 		for row in board
 			for cell in row
@@ -32,32 +39,36 @@ class window.TicTacToe
 		direction = 0
 		#1 = horiz (-), 2= vert (|), 3= leftdiag (\) 4= rightdiag (/)
 		#check Horizontal
+		ind = 0
 		for row in board
 			horiz = (row[0] == row[1] == row[2])
 			if horiz && row[0]!=0
 				bool = bool||horiz
 				winner = row[0]
 				winningMarks = [row[0],row[1],row[2]]
-				direction = 1
+				direction = 1+ind
+			ind+=1
 		#check vertical
+		ind = 0
 		for i in [0..2]
 			vertical= (board[0][i]==board[1][i]==board[2][i])
 			if vertical && board[0][i]!=0
 				bool = bool || vertical
 				winner = board[0][i]
 				winningMarks=[board[0][i],board[1][i],board[2][i]]
-				direction = 2
+				direction = 4+ind
+			ind+=1
 		#check diagonal
 		diagonal1 = (board[0][0]==board[1][1]==board[2][2])
 		if diagonal1 && board[0][0]!=0
 			winner = board[0][0]
 			winningMarks = [board[0][0],board[1][1],board[2][2]]
-			direction = 3
+			direction = 7
 		diagonal2 = (board[0][2]==board[1][1]==board[2][0])
 		if diagonal2 && board[0][2]!=0
 			winner = board[0][2]
 			winningMarks = [board[0][2],board[1][1],board[2][0]]
-			direction = 4
+			direction = 8
 		bool = bool||diagonal1||diagonal2
 		if winner == 0
 			bool = false

@@ -5,7 +5,8 @@
 				{{>headerTemplate}}
 				<div id="game">
 					{{>gameboardTemplate}}
-					<div id= "turn"><span id= "player"></span>'s Turn</div>
+					<div id= "turn"><span id= "player">{{currentTurn}}</span> Turn</div>
+					<div id= "player"> I am {{player}}</div>
 				</div>
 			</div>	
 			<div id="sidebar" class="span3">

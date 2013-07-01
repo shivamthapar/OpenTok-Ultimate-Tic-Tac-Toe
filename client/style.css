@@ -206,8 +206,6 @@ body{
 #player{
 	width: 30px;
 	height: 30px;
-	display:block;
-	display: inline-block;
 }
 #player.x{
 	background: url('../img/x.png');
@@ -236,6 +234,9 @@ td{
 	margin: 5px;
 	z-index: 100;
 }
+.subboard.highlight {
+	background: url(../img/highlight_tile.png);
+}
 .x{
 	width: 40px;
 	height: 40px;
@@ -260,6 +261,9 @@ td{
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 }
+.cell{
+	position: relative;
+}
 .row.top .cell{
 	border-bottom: 3px solid black;
 }
@@ -275,6 +279,7 @@ td{
 	position: absolute;
 	background-size: 100% auto !important;
 	z-index: 150;
+	margin: 5px;
 }
 .line.horiz{
 	width: 120px;
