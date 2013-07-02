@@ -10,12 +10,14 @@
   $subboard = null
   game_id = Session.get('currentGame')
   me = Session.get('player')
+  status = 1
+  winner = 0
 
   updateDB = ->
     game_id = Session.get('currentGame')
     if game_id != null
       console.log "updated DB"
-      Games.update game_id,{$set: {board: board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, lastSubcellClickedCoords: lastSubcellClickedCoords}}
+      Games.update game_id,{$set: {board: board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: winner, lastSubcellClickedCoords: lastSubcellClickedCoords}}
   
   getCoords = ($subcell) ->
     index = $subcell.index ".subcell"
@@ -60,6 +62,7 @@
   #   $subboard = $(".subboard:eq(#{index})")
   parentSubboardWon = (small_cell_coords)->
     c = small_cell_coords
+    console.log board[c[0]][c[1]]
     return tictactoe.subboardWon board[c[0]][c[1]]
   addToSubboardWins = (index, winner, winningMarks, direction)->
     console.log big_board
@@ -69,9 +72,10 @@
     subboard_wins[parseInt(index/3)][index%3] = direction
     console.log "addToSubboardWins called "
     return
-  updateSubboardWins = ->
+  pullFromDB = ->
     if (Session.get "currentGame")?
         currentGame = Games.findOne( Session.get "currentGame" )
+        board= currentGame.board
         big_board = currentGame.bigBoard
         subboard_wins = currentGame.subboardWins
         console.log "update subboardwins called"
@@ -121,7 +125,7 @@
     subboard = board[row][col]
     return tictactoe.subboardFull(subboard)
 
-  updateSubboardWins()
+  pullFromDB()
 
   $(".subcell").click ->
     console.log "me #{me} player #{player}"
@@ -130,6 +134,8 @@
         player = currentGame.turn
     if me != player
       console.log "i am not the player"
+      return
+    if $(this).children('span.o').length>0||$(this).children('span.x').length>0
       return
     c = getCoords $(this)
     lastSubcellClickedCoords = c
@@ -141,12 +147,18 @@
     #   else
     #     if !$parent.is($subboard) && !firstMove
     #       return
+
+    pullFromDB()
+    subboardAlreadyWon = parentSubboardWon c
+    console.log "subboard already won: #{subboardAlreadyWon}"
     setBoardElement c,player
-    subboardWon= parentSubboardWon c
-    index = $parent.index('.subboard')
-    updateSubboardWins()
-    if subboardWon[0]
-      addToSubboardWins(index, subboardWon[1],subboardWon[2],subboardWon[3])
+    if !subboardAlreadyWon[0]
+      subboardWon= parentSubboardWon c
+      index = $parent.index('.subboard')
+      if subboardWon[0]
+        addToSubboardWins(index, subboardWon[1],subboardWon[2],subboardWon[3])
+    else
+      console.log "suboard already won"
     won = tictactoe.bigBoardWon board
     if player==1
       player = 2
@@ -155,6 +167,12 @@
       player = 1
       console.log "player switched"
     updateDB()
-    if won[0]
-      alert "won by #{won[1]}"
+    console.log "won"
+    console.log won
+    if !won
+      return
+    status = 0
+    winner = won[1]
+    updateDB()
+    alert "won by #{won[1]}"
   return

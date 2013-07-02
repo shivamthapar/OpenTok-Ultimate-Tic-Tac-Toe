@@ -104,7 +104,8 @@ class window.TicTacToe
 		won = this.subboardWon(this.big_board)
 		if won[0]
 			console.log("won by "+ won[1])
-		return won
+			return won[1]
+		return false
 
 	###
 	Check if a subboard has been won by a given side. Return whether or not side has won the board.

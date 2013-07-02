@@ -17,6 +17,22 @@ Template.headerTemplate.events
     Meteor.logout()
     url = window.location.replace('../')
 
+Template.gameTemplate.events
+  'click #restartGame': ()->
+    game_id = Session.get "currentGame"
+    if game_id?
+      board = [
+        [[[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]]],
+        [[[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]]],
+        [[[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]]]
+      ]
+      big_board = [[0,0,0],[0,0,0],[0,0,0]]
+      subboard_wins = [[0,0,0],[0,0,0],[0,0,0]]
+      player = 1
+      winner = 0
+      lastSubcellClickedCoords = null
+      Games.update game_id,{$set: {board: board, bigBoard: big_board,subboardWins: subboard_wins, turn: player, winner: winner, lastSubcellClickedCoords: lastSubcellClickedCoords}}
+
 Template.headerTemplate.myPlayer= ()->
   getCurrentPlayer()
 
@@ -40,6 +56,15 @@ Template.gameTemplate.player = () ->
 subboardCounter = 0
 rowCounter = 0
 columnCounter = 0
+
+Template.gameTemplate.won = ()->
+  if (Session.get "currentGame")?
+    currentGame = Games.findOne( Session.get "currentGame" )
+    winner = currentGame.winner
+    if winner==1
+      console.log "Won by X"
+    if winner==2
+      console.log "Won by O"
 
 Template.gameboardTemplate.boardPosition= ->
   val = ""
@@ -230,8 +255,9 @@ createGame = (playerID)->
     big_board = [[0,0,0],[0,0,0],[0,0,0]]
     subboard_wins = [[0,0,0],[0,0,0],[0,0,0]]
     player = 1
+    winner = 0
     lastSubcellClickedCoords = null
-    game = {player1: playerID, board : board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, lastSubcellClickedCoords: lastSubcellClickedCoords, status:1}
+    game = {player1: playerID, board : board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: 0,lastSubcellClickedCoords: lastSubcellClickedCoords, status:1}
     Games.insert game
     cursor = Games.find {player1: playerID}
     game = cursor.fetch()[0]
