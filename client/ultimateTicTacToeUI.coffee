@@ -17,7 +17,7 @@
     game_id = Session.get('currentGame')
     if game_id != null
       console.log "updated DB"
-      Games.update game_id,{$set: {board: board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: winner, lastSubcellClickedCoords: lastSubcellClickedCoords}}
+      Games.update game_id,{$set: {board: board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: winner,lastSubcellClickedCoords: lastSubcellClickedCoords}}
   
   getCoords = ($subcell) ->
     index = $subcell.index ".subcell"
@@ -159,7 +159,7 @@
         addToSubboardWins(index, subboardWon[1],subboardWon[2],subboardWon[3])
     else
       console.log "suboard already won"
-    won = tictactoe.bigBoardWon board
+    winner = tictactoe.bigBoardWon board
     if player==1
       player = 2
       console.log "player switched"
@@ -167,12 +167,10 @@
       player = 1
       console.log "player switched"
     updateDB()
-    console.log "won"
-    console.log won
-    if !won
+    console.log "winner"
+    console.log winner
+    if !winner
       return
     status = 0
-    winner = won[1]
     updateDB()
-    alert "won by #{won[1]}"
   return

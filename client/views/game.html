@@ -1,21 +1,33 @@
 <template name= "gameTemplate">
 <div id="container" class="container-fluid">
-		<div class="row-fluid">
-			<div id="main-window" class="span9">
-				{{>headerTemplate}}
-				<div id="game">
-					{{>gameboardTemplate}}
-					<div id= "turn"><span id= "player">{{currentTurn}}</span> Turn</div>
-					<a href= "" id= "restartGame" class= "btn btn-success">Restart</a>
-					{{won}}
-				</div>
-			</div>	
-			<div id="sidebar" class="span3">
-				{{>chatTemplate}}
-				<div class= "divider"></div>
-				{{>leaderboardsTemplate}}
+	<div class="row-fluid">
+		<div id="main-window" class="span9">
+			{{>headerTemplate}}
+			<div id="game">
+				{{>gameboardTemplate}}
+				<div id= "turn"><span id= "player">{{currentTurn}}</span> Turn</div>
+				<a href= "" id= "restartGame" class= "btn btn-success">Restart</a>
 			</div>
+		</div>	
+		<div id="sidebar" class="span3">
+			{{>chatTemplate}}
+			<div class= "divider"></div>
+			{{>leaderboardsTemplate}}
 		</div>
 	</div>
-
+</div>
+{{#with gameWon}}
+	<div id= "myModal" class="modal show fade">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3>{{greeting}}</h3>
+	  </div>
+	  <div class="modal-body">
+	    <p>Game won by {{winner}}.</p>
+	  </div>
+	  <div class="modal-footer">
+	    <a href="#" class="close" id= "modalClose" class="btn-primary">Close</a>
+	  </div>
+	</div>
+{{/with}}
 </template>

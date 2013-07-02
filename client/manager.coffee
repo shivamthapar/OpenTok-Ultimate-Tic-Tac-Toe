@@ -32,6 +32,9 @@ Template.gameTemplate.events
       winner = 0
       lastSubcellClickedCoords = null
       Games.update game_id,{$set: {board: board, bigBoard: big_board,subboardWins: subboard_wins, turn: player, winner: winner, lastSubcellClickedCoords: lastSubcellClickedCoords}}
+  'click #modalClose': ()->
+    $('#myModal').modal('hide')
+
 
 Template.headerTemplate.myPlayer= ()->
   getCurrentPlayer()
@@ -57,14 +60,31 @@ subboardCounter = 0
 rowCounter = 0
 columnCounter = 0
 
-Template.gameTemplate.won = ()->
+Template.gameTemplate.gameWon = ()->
   if (Session.get "currentGame")?
     currentGame = Games.findOne( Session.get "currentGame" )
+    me = Session.get('player')
     winner = currentGame.winner
+    if !winner
+      console.log "not won"
+      return {won: false}
+    greeting= ""
+    player = ""
+    if me==winner
+      greeting = "Congrats! You Won!"
+    else
+      greeting = "You lost :("
     if winner==1
-      console.log "Won by X"
-    if winner==2
-      console.log "Won by O"
+      player= "X"
+    else
+      player= "O"
+    console.log "game won"
+    console.log {won: true, winner: player, greeting: greeting}
+    $("#myModal").modal('show')
+ 
+    return {won: true, winner: player, greeting: greeting}
+
+
 
 Template.gameboardTemplate.boardPosition= ->
   val = ""
