@@ -24,7 +24,8 @@ body{
 	min-width: 200px;
 	width: 25.53191489361702%;
 	margin-left: 0px;
-	height: 100%;
+	/*height: 100%;*/
+	height: 1000px;
 }
 #pic{
 	float: left;
@@ -117,6 +118,15 @@ body{
 	font-size: 30px;
 	margin: 175px auto 0 auto;
 }
+.completed{
+	color: #5bb75b;
+}
+.info{
+	color: #999;
+}
+.label{
+	margin-right: 10px;
+}
 #leaderboards{
 }
 #leaderboards-top{
@@ -194,6 +204,14 @@ body{
 }
 #chat-window-1{
 	margin-top: 10px;
+}
+#opentok_publisher{
+	width: 100% !important;
+	height: 100% !important;
+}
+.subscriber_div{
+	width: 100% !important;
+	height: 100% !important;
 }
 /**********************/
 #turn {

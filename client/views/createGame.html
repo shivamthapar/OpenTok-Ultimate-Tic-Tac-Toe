@@ -1,0 +1,29 @@
+<template name= "createGameTemplate">
+<div id="container" class="container-fluid">
+	<div class="row-fluid">
+		<div id="main-window" class="span9">
+			{{> headerTemplate}}
+			<div id="game" style= "height: 402px;">
+				{{#if currentUser}}
+				<h3 class= "completed">Step 1: Login with Facebook <i class="icon-check-sign"></i></h3>
+				<h3> Step 2: Name your game</h3>
+				<div class="form-inline">
+					<input type= "hidden" name= "fbId" value= "{{myPlayer.fbId}}" />
+					<input id= "alias" name= "alias" type="text" placeholder="comejoinme">
+					<button id="createGameButton" class="btn btn-success">Create game!</button>
+					<p><span class="label label-info">Tip</span><small class= "info">This will be used in the url (eg. opentokttt.com/game/comejoinme)</small></p>
+				</div>
+				{{else}}
+				<h3>Step 1: Login with Facebook</h3>
+				{{loginButtons}}
+				{{/if}}
+
+			</div>
+		</div>	
+		<div id="sidebar" class="span3">
+			{{>leaderboardsTemplate}}
+		</div>
+	</div>
+</div>
+
+</template>

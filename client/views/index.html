@@ -1,5 +1,7 @@
 <head>
 	<title>Ultimate TicTacToe with Video Chat</title>
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 </head>
 <body>
 	<div id = "mainContainer">
@@ -13,11 +15,7 @@
 			<div id="main-window" class="span9">
 				{{> headerTemplate}}
 				<div id="game" style= "height: 402px;">
-					{{#if currentUser}}
-					<a id="start-game" href="/game" class="btn btn-success">Start Game!</a>
-					{{else}}
-					{{loginButtons}}
-					{{/if}}
+					<a id="start-game" href="/create" class="btn btn-success">Create Game!</a>
 				</div>
 			</div>	
 			<div id="sidebar" class="span3">

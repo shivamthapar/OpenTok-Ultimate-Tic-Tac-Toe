@@ -3,14 +3,83 @@ Meteor.Router.add
     to: 'indexTemplate'
     and: ()->
       Session.set('currentGame',null)
+  '/create': 'createGameTemplate'
+  '/create/:alias': (alias)->
+    alias = alias
+    fbId = getCurrentPlayer().fbId
+    if aliasExists alias
+      return
+    if !fbId
+      return 
+    session = createSession(alias,fbId)
+    console.log session
+    console.log "session #{session._id} created"
+    url = "/game/#{alias}"
+    window.location.replace(url)
+    return 
+  '/game/:alias': 
+    to: 'gameTemplate'
+    and: (alias)->
+      session = Sessions.findOne {alias: alias}
+      if session?
+        game_id = session.gameId
+        Session.set('currentGame', game_id)
+        game = Games.findOne game_id
+        fbId= getCurrentPlayer().fbId 
+        console.log game
+        if game.player1==fbId
+          Session.set('player',1)
+          return
+        if game.player2==fbId
+          Session.set('player',2)
+          return
+        if !game.player2?
+          Session.set('player',2)
+          Games.update game._id, {$set: {player2: fbId}}
+      return
   '/game':
     to: 'gameTemplate'
     and: ->
       player = getCurrentPlayer()
       if player
-        createGame(player.fbId)
+        createTheGame(player.fbId)
         console.log Games
       return
+createSession = (alias,playerID)->
+  board = [
+      [[[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]]],
+      [[[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]]],
+      [[[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]]]
+  ]
+  big_board = [[0,0,0],[0,0,0],[0,0,0]]
+  subboard_wins = [[0,0,0],[0,0,0],[0,0,0]]
+  player = 1
+  winner = 0
+  lastSubcellClickedCoords = null
+  game = {player1: playerID, board : board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: 0,lastSubcellClickedCoords: lastSubcellClickedCoords, status:1}
+  Games.insert game
+  game = Games.findOne {player1: playerID}
+  session = {alias: alias, gameId: game._id}
+  Sessions.insert session
+  return session
+
+aliasExists = (alias)->
+  cursor = Sessions.find {alias: alias}
+  if cursor.fetch().length>0
+    console.log true
+    return true
+  console.log false
+  return false
+
+Deps.autorun ()->
+  if Meteor.userId()
+    $("#facebookModal").modal('hide')
+
+Template.createGameTemplate.events
+  'click #createGameButton': ()->
+    alias = $("#alias").val()
+    url = "/create/#{alias}"
+    window.location.replace url
 
 Template.headerTemplate.events
   'click #logout': ()->
@@ -37,6 +106,9 @@ Template.gameTemplate.events
 
 
 Template.headerTemplate.myPlayer= ()->
+  getCurrentPlayer()
+
+Template.createGameTemplate.myPlayer= ()->
   getCurrentPlayer()
 
 Template.gameTemplate.currentTurn = ()->
@@ -250,7 +322,7 @@ getCurrentPlayer = ->
       }
   return false
 
-createGame = (playerID)->
+createTheGame = (playerID)->
   cursor = Games.find {$or:[ {player2: {"$exists": false}}, $and: [{status:1}, $or: [{player2: playerID}, {player1: playerID}] ] ]}
   console.log cursor.count()
   console.log "called"
