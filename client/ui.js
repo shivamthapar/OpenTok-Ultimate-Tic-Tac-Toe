@@ -5,20 +5,31 @@ Template.gameboardTemplate.rendered = function(){
   tictactoeUI();
 }
 Template.chatTemplate.rendered=function(){
+  console.log("chat tempalte rendered");
   var $window= $(window);
   var $chat= $("#chat");
   var chatWidth,chatHeight;
   TB.addEventListener("exception", exceptionHandler);
-  var apiKey = 34015602
-  var session = TB.initSession("1_MX4zNDAxNTYwMn4xMjcuMC4wLjF-V2VkIEp1bCAwMyAxMTowNzoyNiBQRFQgMjAxM34wLjY4ODE2NTM3fg"); // Replace with your own session ID. See https://dashboard.tokbox.com/projects
-  session.addEventListener("sessionConnected", sessionConnectedHandler);
-  session.addEventListener("streamCreated", streamCreatedHandler);
+  TB.setLogLevel(TB.DEBUG);
+  var apiKey = 32626492
+  var session = TB.initSession("2_MX4zMjYyNjQ5Mn4xMjcuMC4wLjF-TW9uIEF1ZyAwNSAxNTowNToyMCBQRFQgMjAxM34wLjYxOTQ3NjN-"); // Replace with your own session ID. See https://dashboard.tokbox.com/projects
+  session.addEventListener('sessionConnected', sessionConnectedHandler);
+  session.addEventListener('sessionDisconnected', sessionDisconnectedHandler);
+  session.addEventListener('streamCreated', streamCreatedHandler);
+  var publisher;
 
-  session.connect(apiKey, "T1==cGFydG5lcl9pZD0zNDAxNTYwMiZzZGtfdmVyc2lvbj10YnBocC12MC45MS4yMDExLTA3LTA1JnNpZz0zZTYxMGZiZmZkMjU4MDVmMTk1YWVjNGJmNWVmMWVjOGRkYTlkNjRmOnNlc3Npb25faWQ9MV9NWDR6TkRBeE5UWXdNbjR4TWpjdU1DNHdMakYtVjJWa0lFcDFiQ0F3TXlBeE1Ub3dOem95TmlCUVJGUWdNakF4TTM0d0xqWTRPREUyTlRNM2ZnJmNyZWF0ZV90aW1lPTEzNzU3MzYwMDEmcm9sZT1wdWJsaXNoZXImbm9uY2U9MTM3NTczNjAwMS42NDA0NTUxNDExODgwJmV4cGlyZV90aW1lPTEzNzgzMjgwMDE="); // Replace with your API key and token. See https://dashboard.tokbox.com/projects
+  session.connect(apiKey, "T1==cGFydG5lcl9pZD0zMjYyNjQ5MiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz1kMGE3N2IzYWQxMWU3YTAyNGJiZmI5OWM1NThmYjA0NWNhZDExOWIwOnJvbGU9cHVibGlzaGVyJnNlc3Npb25faWQ9Ml9NWDR6TWpZeU5qUTVNbjR4TWpjdU1DNHdMakYtVFc5dUlFRjFaeUF3TlNBeE5Ub3dOVG95TUNCUVJGUWdNakF4TTM0d0xqWXhPVFEzTmpOLSZjcmVhdGVfdGltZT0xMzc1NzQwMzI3Jm5vbmNlPTAuNTY1MTkxNDAyNTg5MjIxOCZleHBpcmVfdGltZT0xMzc4MzMyMzI3JmNvbm5lY3Rpb25fZGF0YT0="); // Replace with your API key and token. See https://dashboard.tokbox.com/projects
   function sessionConnectedHandler(event) {
      subscribeToStreams(event.streams);
      startPublishing();
   }
+  function sessionDisconnectedHandler(event) {
+      // This signals that the user was disconnected from the Session. Any subscribers and publishers
+      // will automatically be removed. This default behaviour can be prevented using event.preventDefault()
+      publisher = null;
+    }
+
+
   function addStream(stream) {
       // Check if this is the stream that I am publishing, and if so do not publish.
       if (stream.connection.connectionId == session.connection.connectionId) {
