@@ -61,6 +61,7 @@ createSession = (alias,playerID)->
   game = Games.findOne {player1: playerID}
   session = {alias: alias, gameId: game._id}
   Sessions.insert session
+  Meteor.call "createOpenTok", alias
   return session
 
 aliasExists = (alias)->
@@ -357,3 +358,5 @@ createTheGame = (playerID)->
     Session.set('currentGame',game._id)
     Session.set('player',1)
   return
+
+
