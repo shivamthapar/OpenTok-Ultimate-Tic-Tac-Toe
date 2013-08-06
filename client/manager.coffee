@@ -228,6 +228,7 @@ Template.subboardTemplate.highlight = ->
     return
   index = c[2]*3+c[3]
   html = ""
+  console.log("subboardCounter: #{subboardCounter}, index: #{index}")
   if subboardCounter == index
     html = "highlight"
   subboardCounter+=1

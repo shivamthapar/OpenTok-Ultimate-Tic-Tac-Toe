@@ -252,7 +252,7 @@ td{
 	margin: 5px;
 	z-index: 100;
 }
-.subboard.highlight {
+.subboard.highlight{
 	background: url(../img/highlight_tile.png);
 }
 .x{
@@ -354,4 +354,17 @@ td{
 }
 .subboard.rightDiag.red{
 	background: url(../img/rdiag_r.png);
+}
+
+.subboard.leftDiag.green.highlight{
+	background: url(../img/ldiag_g_highlight.png);
+}
+.subboard.leftDiag.red.highlight{
+	background: url(../img/ldiag_r_highlight.png);
+}
+.subboard.rightDiag.green.highlight{
+	background: url(../img/rdiag_g_highlight.png);
+}
+.subboard.rightDiag.red.highlight{
+	background: url(../img/rdiag_r_highlight.png);
 }
