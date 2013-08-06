@@ -23,7 +23,13 @@ Meteor.Router.add
       session = Sessions.findOne {alias: alias}
       if session?
         game_id = session.gameId
+        ot_session_id = session.otSessionId
         Session.set('currentGame', game_id)
+        Session.set('otSessionId', ot_session_id)
+        Meteor.call "createToken", ot_session_id, (err,data)->
+          console.log "ot_token #{data}"
+          Session.set('otToken', data)
+          window.initOpenTok(ot_session_id, data)
         game = Games.findOne game_id
         fbId= getCurrentPlayer().fbId 
         console.log game
@@ -112,7 +118,7 @@ Template.headerTemplate.myPlayer= ()->
 Template.createGameTemplate.myPlayer= ()->
   getCurrentPlayer()
 
-Template.gameTemplate.currentTurn = ()->
+Template.gameboardTemplate.currentTurn = ()->
   if (Session.get "currentGame")?
     currentGame = Games.findOne( Session.get "currentGame" )
     turn = currentGame.turn
@@ -133,7 +139,7 @@ subboardCounter = 0
 rowCounter = 0
 columnCounter = 0
 
-Template.gameTemplate.gameWon = ()->
+Template.gameWonModalTemplate.gameWon = ()->
   if (Session.get "currentGame")?
     currentGame = Games.findOne( Session.get "currentGame" )
     me = Session.get('player')

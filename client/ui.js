@@ -1,8 +1,18 @@
+var apiKey,session, publisher;
 Template.gameTemplate.rendered = function(){
+  console.log("gameTemplate rendered");
   $("#facebookModal").modal('show');
 }
 Template.gameboardTemplate.rendered = function(){
   tictactoeUI();
+}
+window.initOpenTok = function(otSessionId, otToken){
+    apiKey = 32626492
+    session = TB.initSession(otSessionId); // Replace with your own session ID. See https://dashboard.tokbox.com/projects
+    session.addEventListener('sessionConnected', sessionConnectedHandler);
+    session.addEventListener('sessionDisconnected', sessionDisconnectedHandler);
+    session.addEventListener('streamCreated', streamCreatedHandler);
+    session.connect(apiKey, otToken); 
 }
 Template.chatTemplate.rendered=function(){
   console.log("chat tempalte rendered");
@@ -10,68 +20,7 @@ Template.chatTemplate.rendered=function(){
   var $chat= $("#chat");
   var chatWidth,chatHeight;
   TB.addEventListener("exception", exceptionHandler);
-  TB.setLogLevel(TB.DEBUG);
-  var apiKey = 32626492
-  var session = TB.initSession("2_MX4zMjYyNjQ5Mn4xMjcuMC4wLjF-TW9uIEF1ZyAwNSAxNTowNToyMCBQRFQgMjAxM34wLjYxOTQ3NjN-"); // Replace with your own session ID. See https://dashboard.tokbox.com/projects
-  session.addEventListener('sessionConnected', sessionConnectedHandler);
-  session.addEventListener('sessionDisconnected', sessionDisconnectedHandler);
-  session.addEventListener('streamCreated', streamCreatedHandler);
-  var publisher;
-
-  session.connect(apiKey, "T1==cGFydG5lcl9pZD0zMjYyNjQ5MiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz1kMGE3N2IzYWQxMWU3YTAyNGJiZmI5OWM1NThmYjA0NWNhZDExOWIwOnJvbGU9cHVibGlzaGVyJnNlc3Npb25faWQ9Ml9NWDR6TWpZeU5qUTVNbjR4TWpjdU1DNHdMakYtVFc5dUlFRjFaeUF3TlNBeE5Ub3dOVG95TUNCUVJGUWdNakF4TTM0d0xqWXhPVFEzTmpOLSZjcmVhdGVfdGltZT0xMzc1NzQwMzI3Jm5vbmNlPTAuNTY1MTkxNDAyNTg5MjIxOCZleHBpcmVfdGltZT0xMzc4MzMyMzI3JmNvbm5lY3Rpb25fZGF0YT0="); // Replace with your API key and token. See https://dashboard.tokbox.com/projects
-  function sessionConnectedHandler(event) {
-     subscribeToStreams(event.streams);
-     startPublishing();
-  }
-  function sessionDisconnectedHandler(event) {
-      // This signals that the user was disconnected from the Session. Any subscribers and publishers
-      // will automatically be removed. This default behaviour can be prevented using event.preventDefault()
-      publisher = null;
-    }
-
-
-  function addStream(stream) {
-      // Check if this is the stream that I am publishing, and if so do not publish.
-      if (stream.connection.connectionId == session.connection.connectionId) {
-        return;
-      }
-      var subscriberDiv = document.createElement('div'); // Create a div for the subscriber to replace
-      subscriberDiv.setAttribute('id', stream.streamId); // Give the replacement div the id of the stream as its id.
-      subscriberDiv.setAttribute('class','subscriber_div')
-      document.getElementById("chat-window-2").appendChild(subscriberDiv);
-      var vid_width=$(".chat-window").width();
-      var vid_height=$(".chat-window").height();
-      var subscriberProps = {width: vid_width, height: vid_height};
-      session.subscribe(stream, subscriberDiv.id, subscriberProps);
-    }
-  function streamCreatedHandler(event) {
-    subscribeToStreams(event.streams);
-  }
-  function startPublishing(){
-    var parentDiv = document.getElementById("chat-window-1");
-    var publisherDiv = document.createElement('div'); // Create a div for the publisher to replace
-    publisherDiv.setAttribute('id', 'opentok_publisher');
-    parentDiv.appendChild(publisherDiv);
-    var vid_width=$(".chat-window").width();
-    var vid_height=$(".chat-window").height();
-    var publisherProps = {width: vid_width, height: vid_height};
-    publisher = TB.initPublisher(apiKey, publisherDiv.id, publisherProps);  // Pass the replacement div id and properties
-    session.publish(publisher);
-  }
-  
-  function subscribeToStreams(streams) {
-    for (var i = 0; i < streams.length; i++) {
-      var stream = streams[i];
-      console.log(stream.connection.connectionId+"&"+session.connection.connectionId);
-      if (stream.connection.connectionId != session.connection.connectionId) {
-        addStream(stream);
-      }
-    }
-  }
-  
-  function exceptionHandler(event) {
-    alert(event.message);
-  }
+  //Replace with your API key and token. See https://dashboard.tokbox.com/projects
   function checkDimensions(){
     chatHeight=$chat.height();
     chatWidth=$chat.width();
@@ -95,4 +44,57 @@ Template.chatTemplate.rendered=function(){
   }
   checkDimensions();
   $window.resize(checkDimensions);
+}
+function sessionConnectedHandler(event) {
+ subscribeToStreams(event.streams);
+ startPublishing();
+}
+function sessionDisconnectedHandler(event) {
+  // This signals that the user was disconnected from the Session. Any subscribers and publishers
+  // will automatically be removed. This default behaviour can be prevented using event.preventDefault()
+  publisher = null;
+}
+
+
+function addStream(stream) {
+  // Check if this is the stream that I am publishing, and if so do not publish.
+  if (stream.connection.connectionId == session.connection.connectionId) {
+    return;
+  }
+  var subscriberDiv = document.createElement('div'); // Create a div for the subscriber to replace
+  subscriberDiv.setAttribute('id', stream.streamId); // Give the replacement div the id of the stream as its id.
+  subscriberDiv.setAttribute('class','subscriber_div')
+  document.getElementById("chat-window-2").appendChild(subscriberDiv);
+  var vid_width=$(".chat-window").width();
+  var vid_height=$(".chat-window").height();
+  var subscriberProps = {width: vid_width, height: vid_height};
+  session.subscribe(stream, subscriberDiv.id, subscriberProps);
+}
+function streamCreatedHandler(event) {
+subscribeToStreams(event.streams);
+}
+function startPublishing(){
+var parentDiv = document.getElementById("chat-window-1");
+var publisherDiv = document.createElement('div'); // Create a div for the publisher to replace
+publisherDiv.setAttribute('id', 'opentok_publisher');
+parentDiv.appendChild(publisherDiv);
+var vid_width=$(".chat-window").width();
+var vid_height=$(".chat-window").height();
+var publisherProps = {width: vid_width, height: vid_height};
+publisher = TB.initPublisher(apiKey, publisherDiv.id, publisherProps);  // Pass the replacement div id and properties
+session.publish(publisher);
+}
+
+function subscribeToStreams(streams) {
+for (var i = 0; i < streams.length; i++) {
+  var stream = streams[i];
+  console.log(stream.connection.connectionId+"&"+session.connection.connectionId);
+  if (stream.connection.connectionId != session.connection.connectionId) {
+    addStream(stream);
+  }
+}
+}
+
+function exceptionHandler(event) {
+alert(event.message);
 }

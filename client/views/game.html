@@ -6,7 +6,6 @@
 			<div id="game">
 				{{#if currentUser}}
 					{{>gameboardTemplate}}
-					<div id= "turn"><span id= "player">{{currentTurn}}</span> Turn</div>
 					<a href= "" id= "restartGame" class= "btn btn-success">Restart</a>
 				{{else}}
 				{{loginButtons}}
@@ -32,6 +31,9 @@
   </div>
 </div>
 {{/if}}
+{{>gameWonModalTemplate}}
+</template>
+<template name="gameWonModalTemplate">
 {{#with gameWon}}
 	<div id= "myModal" class="modal show fade">
 	  <div class="modal-header">

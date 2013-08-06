@@ -1,4 +1,7 @@
 Fiber = Npm.require('fibers')
+API_KEY = "32626492"
+API_SECRET = "0d7c7a0772e3db3e2ab2d4bab6d5e50d4ac355ef"
+OT = new OpenTok.OpenTokSDK API_KEY,API_SECRET
 
 Accounts.onCreateUser (options, user)->
   if options.profile
@@ -6,7 +9,7 @@ Accounts.onCreateUser (options, user)->
     options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=large"
     options.profile.score = 0
     user.profile = options.profile
-    addPlayerToDB user.profile
+    Meteor.call "addPlayerToDB",user.profile
   return user
 
 Accounts.loginServiceConfiguration.remove {
@@ -97,14 +100,14 @@ Meteor.methods
   createOpenTok : (alias)->
     console.log("called")
     session = Sessions.findOne {alias:alias}
-
-    api_key = "32626492"
-    api_secret = "0d7c7a0772e3db3e2ab2d4bab6d5e50d4ac355ef"
-    ot = new OpenTok.OpenTokSDK api_key,api_secret
     location = "127.0.0.1"
-
-    ot.create_session location, (result)->
+    OT.create_session location, (result)->
       Fiber(-> 
         ot_session_id = result
         Sessions.update session._id, {$set: {otSessionId: ot_session_id}}
       ).run()
+
+  createToken : (sid)->
+    token = OT.generateToken({session_id:sid})
+    console.log("token #{token}")
+    return token
