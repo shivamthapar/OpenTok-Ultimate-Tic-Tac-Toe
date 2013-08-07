@@ -6,6 +6,22 @@ Template.gameTemplate.rendered = function(){
 Template.gameboardTemplate.rendered = function(){
   tictactoeUI();
 }
+Template.gameWonModalTemplate.rendered = function(){
+  if($("#myModal").attr('data-show')=='true')
+    $("#myModal").modal();
+  $("#myModal").on('hidden',function(){
+    window.location = window.location.origin;
+  });
+}
+Template.waitingForPlayerModalTemplate.rendered = function(){
+  if($("#waitingForPlayerModal").attr('data-show')=='true')
+    $("#waitingForPlayerModal").modal();
+  if($("#waitingForPlayerModal").attr('data-show')=='false'){
+    $('#waitingForPlayerModal').modal('hide');
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+  }
+}
 window.initOpenTok = function(otSessionId, otToken){
     apiKey = 32626492
     session = TB.initSession(otSessionId); // Replace with your own session ID. See https://dashboard.tokbox.com/projects

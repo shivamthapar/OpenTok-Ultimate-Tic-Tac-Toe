@@ -31,21 +31,31 @@
   </div>
 </div>
 {{/if}}
+{{>waitingForPlayerModalTemplate}}
 {{>gameWonModalTemplate}}
 </template>
 <template name="gameWonModalTemplate">
 {{#with gameWon}}
-	<div id= "myModal" class="modal show fade">
+	<div id= "myModal" class="modal fade" data-show="{{showModal}}">
 	  <div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('.modal').hide()" >&times;</button>
 	    <h3>{{greeting}}</h3>
 	  </div>
 	  <div class="modal-body">
 	    <p>Game won by {{winner}}.</p>
 	  </div>
 	  <div class="modal-footer">
-	    <a href="#" class="close" id= "modalClose" class="btn-primary">Close</a>
+	    <a href="#" class="close" id= "modalClose" onclick="$('.modal').hide()" class="btn-primary">Close</a>
 	  </div>
 	</div>
 {{/with}}
+</template>
+<template name="waitingForPlayerModalTemplate">
+	<div id= "waitingForPlayerModal" class="modal fade" data-show="{{showModal}}" data-backdrop="static">
+	  <div class="modal-header">
+	    <h3>Waiting for player to join...</h3>
+	  </div>
+	  <div class="modal-body">
+	  </div>
+	</div>
 </template>

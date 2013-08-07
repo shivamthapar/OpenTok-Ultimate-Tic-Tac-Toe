@@ -62,9 +62,10 @@ createSession = (alias,playerID)->
   player = 1
   winner = 0
   lastSubcellClickedCoords = null
-  game = {player1: playerID, board : board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: 0,lastSubcellClickedCoords: lastSubcellClickedCoords, status:1}
+  index = Games.find({}).count()+1
+  game = {index: index, player1: playerID, board : board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: 0,lastSubcellClickedCoords: lastSubcellClickedCoords, status:1}
   Games.insert game
-  game = Games.findOne {player1: playerID}
+  game = Games.findOne {index: index}
   session = {alias: alias, gameId: game._id}
   Sessions.insert session
   Meteor.call "createOpenTok", alias
@@ -159,10 +160,27 @@ Template.gameWonModalTemplate.gameWon = ()->
       player= "O"
     console.log "game won"
     console.log {won: true, winner: player, greeting: greeting}
-    $("#myModal").modal('show')
  
     return {won: true, winner: player, greeting: greeting}
 
+Template.gameWonModalTemplate.showModal = ()->
+  if (Session.get "currentGame")?
+    currentGame = Games.findOne( Session.get "currentGame" )
+    me = Session.get('player')
+    winner = currentGame.winner
+    if !winner
+      console.log("not won!!!")
+      return "false"
+    console.log("WON!!!")
+    return "true"
+
+Template.waitingForPlayerModalTemplate.showModal = ()->
+  if (Session.get "currentGame")?
+    currentGame = Games.findOne( Session.get "currentGame" )
+    if !("player2" of currentGame) or !currentGame.player2?
+      console.log "NO SECOND PLAYER"
+      return "true"
+    return "false"
 
 
 Template.gameboardTemplate.boardPosition= ->
