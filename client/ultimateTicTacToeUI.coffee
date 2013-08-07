@@ -1,11 +1,13 @@
 
 @tictactoeUI = ->
+  console.log "tictactoeUI called"
   tictactoe = new TicTacToe()
   board = tictactoe.board
+  empty_board = tictactoe.board
   big_board = tictactoe.big_board
   subboard_wins = tictactoe.subboard_wins
   player = 1
-  firstMove = true
+  firstMove = false
   lastSubcellClickedCoords = null
   $subboard = null
   game_id = Session.get('currentGame')
@@ -77,6 +79,9 @@
         currentGame = Games.findOne( Session.get "currentGame" )
         board= currentGame.board
         big_board = currentGame.bigBoard
+        firstMove = (JSON.stringify(board) == JSON.stringify(empty_board))
+        lastSubcellClickedCoords = currentGame.lastSubcellClickedCoords
+        console.log("first move is: #{firstMove}")
         subboard_wins = currentGame.subboardWins
         console.log "update subboardwins called"
         console.log subboard_wins
@@ -123,11 +128,14 @@
     row = parseInt index/3
     col = index%3
     subboard = board[row][col]
+    console.log "subboard is full: #{tictactoe.subboardFull(subboard)}"
     return tictactoe.subboardFull(subboard)
 
   pullFromDB()
 
   $(".subcell").click ->
+
+    pullFromDB()
     console.log "me #{me} player #{player}"
     if (Session.get "currentGame")?
         currentGame = Games.findOne( Session.get "currentGame" )
@@ -138,8 +146,15 @@
     if $(this).children('span.o').length>0||$(this).children('span.x').length>0
       return
     c = getCoords $(this)
+    if !firstMove
+      reservedSubboard = lastSubcellClickedCoords[2]*3+lastSubcellClickedCoords[3]
+      $reservedSubboard = $(".subboard:eq(#{reservedSubboard})")
     lastSubcellClickedCoords = c
     $parent = $($(this).parents('.subboard')[0])
+    console.log("first move: #{firstMove}")
+    if !firstMove && !isSubboardFull($reservedSubboard) && !$parent.hasClass("highlight")
+      console.log("IGNORED")
+      return
     # if $subboard?
     #   if isSubboardFull $subboard
     #     if $parent.is $subboard
@@ -148,7 +163,6 @@
     #     if !$parent.is($subboard) && !firstMove
     #       return
 
-    pullFromDB()
     subboardAlreadyWon = parentSubboardWon c
     console.log "subboard already won: #{subboardAlreadyWon}"
     setBoardElement c,player
@@ -172,5 +186,6 @@
     if !winner
       return
     status = 0
+    firstMove = false
     updateDB()
   return
