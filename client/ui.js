@@ -56,6 +56,9 @@ Template.chatTemplate.rendered=function(){
     if(chatWindowWidth>minWidth && chatWindowHeight>minHeight){
       $(".chat-window").width(chatWindowWidth);
       $(".chat-window").height(chatWindowHeight);
+    } else{
+      $(".chat-window").width(minWidth);
+      $(".chat-window").height(minHeight);
     }
   }
   checkDimensions();
@@ -96,8 +99,7 @@ publisherDiv.setAttribute('id', 'opentok_publisher');
 parentDiv.appendChild(publisherDiv);
 var vid_width=$(".chat-window").width();
 var vid_height=$(".chat-window").height();
-var publisherProps = {width: vid_width, height: vid_height};
-publisher = TB.initPublisher(apiKey, publisherDiv.id, publisherProps);  // Pass the replacement div id and properties
+publisher = TB.initPublisher(apiKey, publisherDiv.id);  // Pass the replacement div id and properties
 session.publish(publisher);
 }
 
