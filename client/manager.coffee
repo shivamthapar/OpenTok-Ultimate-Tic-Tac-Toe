@@ -3,25 +3,12 @@ Meteor.Router.add
     to: 'indexTemplate'
     and: ()->
       Session.set('currentGame',null)
-  '/create': 
+  '/create':
     to: 'createGameTemplate'
     and: ()->
       console.log "router"
       Session.set('querystring',this.querystring.substring(6))
-  '/create/:alias': (alias)->
-    alias = alias
-    fbId = getCurrentPlayer().fbId
-    if aliasExists alias
-      return
-    if !fbId
-      return 
-    session = createSession(alias,fbId)
-    console.log session
-    console.log "session #{session._id} created"
-    url = "/game/#{alias}"
-    #window.location.replace(url)
-    return 
-  '/game/:alias': 
+  '/game/:alias':
     to: 'gameTemplate'
     and: (alias)->
       session = Sessions.findOne {alias: alias}
@@ -46,6 +33,17 @@ Meteor.Router.add
         if !game.player2?
           Session.set('player',2)
           Games.update game._id, {$set: {player2: fbId}}
+      else
+        fbId = getCurrentPlayer().fbId
+        if aliasExists alias
+          return
+        if !fbId
+          return
+        session = createSession(alias,fbId)
+        console.log session
+        console.log "session #{session._id} created"
+        url = "/game/#{alias}"
+        window.location.replace(url)
       return
   '/game':
     to: 'gameTemplate'
@@ -150,8 +148,8 @@ Template.gameTemplate.player = () ->
       return "o"
 
 subboardCounter = 0
-rowCounter = 0
-columnCounter = 0
+rowCounter = 1
+columnCounter = 1
 
 Template.gameWonModalTemplate.gameWon = ()->
   if (Session.get "currentGame")?
@@ -263,6 +261,8 @@ Template.subboardTemplate.highlight = ->
   if subboardCounter == index
     html = "highlight"
   subboardCounter+=1
+  if subboardCounter % 9 == 0
+    subboardCounter = 0
   return html
 
 Template.subboardTemplate.subboardRowPosition = ->
