@@ -3,7 +3,11 @@ Meteor.Router.add
     to: 'indexTemplate'
     and: ()->
       Session.set('currentGame',null)
-  '/create': 'createGameTemplate'
+  '/create': 
+    to: 'createGameTemplate'
+    and: ()->
+      console.log "router"
+      Session.set('querystring',this.querystring.substring(6))
   '/create/:alias': (alias)->
     alias = alias
     fbId = getCurrentPlayer().fbId
@@ -15,7 +19,7 @@ Meteor.Router.add
     console.log session
     console.log "session #{session._id} created"
     url = "/game/#{alias}"
-    window.location.replace(url)
+    #window.location.replace(url)
     return 
   '/game/:alias': 
     to: 'gameTemplate'
@@ -72,11 +76,11 @@ createSession = (alias,playerID)->
   return session
 
 aliasExists = (alias)->
-  cursor = Sessions.find {alias: alias}
-  if cursor.fetch().length>0
-    console.log true
+  console.log Sessions.findOne({alias: alias})
+  if Sessions.findOne({alias: alias})?
+    console.log "alias exists, redirecting"
     return true
-  console.log false
+  console.log "alias doesn't exist"
   return false
 
 Deps.autorun ()->
@@ -118,6 +122,15 @@ Template.headerTemplate.myPlayer= ()->
 
 Template.createGameTemplate.myPlayer= ()->
   getCurrentPlayer()
+
+Template.createGameTemplate.error = ()->
+  if Session.get('querystring')=="gameroomExists"
+    return {
+      class: "error"
+      errorMessage: "The gameroom already exists!"
+    }
+  console.log "querystring doesnt exist"
+  return {}
 
 Template.gameboardTemplate.currentTurn = ()->
   if (Session.get "currentGame")?
