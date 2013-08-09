@@ -1,6 +1,6 @@
 Fiber = Npm.require('fibers')
-API_KEY = "32626492"
-API_SECRET = "0d7c7a0772e3db3e2ab2d4bab6d5e50d4ac355ef"
+API_KEY = "25925352"
+API_SECRET = "b10360ef840cd6659cd5d14d184f629926b55d30"
 OT = new OpenTok.OpenTokSDK API_KEY,API_SECRET
 
 Accounts.onCreateUser (options, user)->

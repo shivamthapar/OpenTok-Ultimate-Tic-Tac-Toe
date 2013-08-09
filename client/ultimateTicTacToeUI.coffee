@@ -19,8 +19,7 @@
     game_id = Session.get('currentGame')
     if game_id != null
       console.log "updated DB"
-      Games.update game_id,{$set: {board: board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: winner,lastSubcellClickedCoords: lastSubcellClickedCoords}}
-  
+      Games.update game_id,{$set: {board: board, bigBoard: big_board, subboardWins: subboard_wins, turn: player, winner: winner,lastSubcellClickedCoords: lastSubcellClickedCoords, status: status}}
   getCoords = ($subcell) ->
     index = $subcell.index ".subcell"
     big_row = parseInt index/27

@@ -7,12 +7,17 @@
 				{{#if currentUser}}
 				<h3 class= "completed">Step 1: Login with Facebook <i class="icon-check-sign"></i></h3>
 				<h3> Step 2: Name your game</h3>
+				{{#with error}}
 				<div class="form-inline">
+					<div class="control-group {{class}}">
 					<input type= "hidden" name= "fbId" value= "{{myPlayer.fbId}}" />
 					<input id= "alias" name= "alias" type="text" placeholder="comejoinme">
 					<button id="createGameButton" class="btn btn-success">Create game!</button>
+					<p><span class="help-inline">{{errorMessage}}</span></p>
 					<p><span class="label label-info">Tip</span><small class= "info">This will be used in the url (eg. opentokttt.com/game/comejoinme)</small></p>
+					</div>
 				</div>
+				{{/with}}
 				{{else}}
 				<h3>Step 1: Login with Facebook</h3>
 				{{loginButtons}}

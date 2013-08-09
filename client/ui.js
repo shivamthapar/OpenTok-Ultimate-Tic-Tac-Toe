@@ -10,7 +10,11 @@ Template.gameWonModalTemplate.rendered = function(){
   if($("#myModal").attr('data-show')=='true')
     $("#myModal").modal();
   $("#myModal").on('hidden',function(){
-    window.location = window.location.origin;
+    var gameId = Session.get('currentGame');
+    Games.remove(gameId, function(){
+      Session.set('currentGame', undefined);
+      window.location = window.location.origin;
+    });    
   });
 }
 Template.waitingForPlayerModalTemplate.rendered = function(){
@@ -23,7 +27,7 @@ Template.waitingForPlayerModalTemplate.rendered = function(){
   }
 }
 window.initOpenTok = function(otSessionId, otToken){
-    apiKey = 32626492
+    apiKey = 25925352
     session = TB.initSession(otSessionId); // Replace with your own session ID. See https://dashboard.tokbox.com/projects
     session.addEventListener('sessionConnected', sessionConnectedHandler);
     session.addEventListener('sessionDisconnected', sessionDisconnectedHandler);
